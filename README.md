@@ -1,4 +1,4 @@
-# Dice Frontend
+# Temporence CMS
 
 ### Version
 
@@ -12,7 +12,7 @@ React-router-dom V6
 
 ```
 1. git clone
-2. cd dice-frontend
+2. cd temporence_cms_backend
 3. yarn
 4. yarn dev
 ```
