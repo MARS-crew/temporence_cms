@@ -1,8 +1,8 @@
 // ** React Imports
 import { useState, useCallback } from 'react'
 
-const useInput = (initalValue: any) => {
-  const [data, setData] = useState<any>(initalValue)
+function useInput(initalValue: any) {
+  const [data, setData] = useState(initalValue)
 
   const handler = useCallback(
     (e: any) => {

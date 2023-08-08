@@ -1,42 +1,20 @@
 // ** Mui Imports
-import { Dialog, DialogActions, Button, DialogContentText } from '@mui/material'
+import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material'
 
 interface Props {
   state: boolean
-  closeEvent(): void
-  message: string
-  event: any
-  one?: string
-  two?: string
+  title: string
+  handleClose: () => void
+  event: () => void
 }
 
-const SelectModal = ({
-  state,
-  closeEvent,
-  event,
-  message,
-  one,
-  two,
-}: Props) => {
+const SelectModal = ({ state, handleClose, title, event }: Props) => {
   return (
-    <Dialog
-      open={state}
-      disableEscapeKeyDown
-      onClose={(event, reason) => {
-        if (reason !== 'backdropClick') {
-          closeEvent()
-        }
-      }}
-      fullWidth
-    >
-      <DialogContentText sx={{ textAlign: 'center', pt: 5 }}>
-        {message}
-      </DialogContentText>
-      <DialogActions>
-        <Button onClick={event}>{one ? one : '확인'}</Button>
-        <Button onClick={closeEvent} sx={{ color: 'grey' }}>
-          {two ? two : '취소'}
-        </Button>
+    <Dialog open={state}>
+      <DialogTitle sx={{ textAlign: 'center', mt: 1 }}>{title}</DialogTitle>
+      <DialogActions sx={{ mt: -2 }}>
+        <Button onClick={event}>확인</Button>
+        <Button onClick={handleClose}>취소</Button>
       </DialogActions>
     </Dialog>
   )

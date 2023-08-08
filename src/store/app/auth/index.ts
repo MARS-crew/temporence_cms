@@ -1,44 +1,23 @@
 // ** Redux Imports
+import { RootState } from '@/store'
 import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from '../..'
 
-interface InitialStateProps {
+const initialState = {
   user: {
-    username: string
-    accessToken: string
-    refreshToken: string
-    grade: string
-  }
-}
-
-const initialState: InitialStateProps = {
-  user: { username: '', accessToken: '', refreshToken: '', grade: '' },
+    email: '',
+    name: '',
+    accessToken: '',
+    refreshToken: '',
+  },
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    updateUser: (state, { payload }) => {
-      state.user = {
-        ...state.user,
-        ...payload,
-      }
-    },
-    logout: (state) => {
-      state.user = initialState.user
-    },
-    updateToken: (state, { payload }) => {
-      state.user = {
-        ...state.user,
-        ...payload,
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {},
 })
 
 export default authSlice.reducer
 
-export const { updateUser, logout, updateToken } = authSlice.actions
 export const getAccessToken = (state: RootState) => state.auth.user.accessToken

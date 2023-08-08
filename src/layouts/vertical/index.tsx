@@ -1,97 +1,109 @@
-// ** React Imports
-import { Fragment, useEffect, useState } from 'react'
-
-// ** Router Imports
-import { Link, useLocation } from 'react-router-dom'
-// ** Mui Imports
 import {
+  Avatar,
+  Box,
   Divider,
   List,
+  ListItem,
   ListItemIcon,
+  makeStyles,
   Drawer,
   styled,
-  ListItemText,
-  Box,
-  Avatar,
-  ListItem,
-} from '@mui/material'
+} from '@material-ui/core'
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
+import AdbIcon from '@mui/icons-material/Adb'
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle'
+import ApprovalIcon from '@mui/icons-material/Approval'
 
-// ** Component Imports
-import navListItem from '../nav'
-import Hori from '../hori'
-import SubMenu from '../subMenu'
+import { ListItemText, Toolbar as MuiToolbar, Typography } from '@mui/material'
+import Hori from '@/layouts/hori'
 
 const DrawerPaper = styled(Drawer)({
-  width: 250,
+  width: 1000,
+})
+
+const useStyles = makeStyles((theme) => ({
+  menuSliderContainer: {
+    width: 250,
+    background: '#C63327',
+    height: '100%',
+  },
+  avatar: {
+    margin: '0.5rem auto',
+    padding: '1rem',
+    width: theme.spacing(13),
+    height: theme.spacing(13),
+  },
+  listItem: {
+    color: 'white',
+    marginLeft: 10,
+  },
+}))
+
+const SidebarWrapper = styled('div')(({ theme }) => ({
+  width: 400,
+  flexShrink: 0,
+}))
+
+const Toolbar = styled(MuiToolbar)(({ theme }) => ({
+  ...theme.mixins.toolbar,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}))
+
+const HeaderTypography = styled(Typography)({
+  flexGrow: 1,
 })
 
 const VerticalNavigation = () => {
-  const { pathname } = useLocation()
-  const [listItems, setListItems] = useState<any[]>(navListItem)
-
-  const handleSubMenuToggle = (index: any) => {
-    const updatedListItems = [...listItems]
-    updatedListItems[index].isSubMenuOpen =
-      !updatedListItems[index].isSubMenuOpen
-    setListItems(updatedListItems)
-  }
-
-  useEffect(() => {
-    const updatedListItems = listItems.map((item) => {
-      if (item.href === '/' + pathname.split('/')[1]) {
-        return { ...item, isSubMenuOpen: true }
-      }
-
-      return { ...item, isSubMenuOpen: false }
-    })
-
-    setListItems(updatedListItems)
-  }, [pathname])
-
+  const classes = useStyles()
   return (
-    <>
+    <SidebarWrapper>
       <Hori />
       <DrawerPaper variant="permanent">
-        <Box
-          component="div"
-          sx={{
-            width: 250,
-            backgroundColor: '#222222',
-            height: '100%',
-            overflow: 'hidden',
-          }}
-        >
-          <Box sx={{ textAlign: 'center', py: 3 }}>
-            <Link to="/">
-              <img src="/image/logo.png" width={160} />
-            </Link>
-          </Box>
+        <Box className={classes.menuSliderContainer} component="div">
+          <Avatar
+            className={classes.avatar}
+            src="https://i.ibb.co/rx5DFbs/avatar.png"
+            alt="Juaneme8"
+          />
           <Divider />
           <List>
             {listItems.map((listItem, index) => (
-              <Fragment key={index}>
-                <ListItem
+              <ListItem className={classes.listItem} button key={index}>
+                <ListItemIcon className={classes.listItem}>
+                  {listItem.listIcon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={listItem.listText}
                   sx={{ color: 'white' }}
-                  onClick={() => handleSubMenuToggle(index)}
-                >
-                  <ListItemIcon sx={{ color: 'white', ml: 3 }}>
-                    {listItem.listIcon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={listItem.listText}
-                    sx={{ color: 'white' }}
-                  />
-                </ListItem>
-                {listItem.isSubMenuOpen && listItem.subMenuItems && (
-                  <SubMenu listItems={listItem.subMenuItems} />
-                )}
-              </Fragment>
+                />
+              </ListItem>
             ))}
           </List>
         </Box>
       </DrawerPaper>
-    </>
+    </SidebarWrapper>
   )
 }
 
 export default VerticalNavigation
+
+const listItems = [
+  {
+    listIcon: <AccessibilityNewIcon />,
+    listText: 'Home',
+  },
+  {
+    listIcon: <AdbIcon />,
+    listText: 'Resume',
+  },
+  {
+    listIcon: <AirportShuttleIcon />,
+    listText: 'Portfolio',
+  },
+  {
+    listIcon: <ApprovalIcon />,
+    listText: 'Contacts',
+  },
+]

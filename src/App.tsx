@@ -1,18 +1,14 @@
 // ** Router Imports
-import { Route, Routes } from 'react-router-dom'
-
-// ** Component Imports
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LoginPage from './pages/login-page'
-import { ProtectRoute, PublicRoute } from './utils/protect-route'
 
-function App() {
+const App = () => {
   return (
-    <Routes>
-      <Route element={<PublicRoute />}>
+    <BrowserRouter>
+      <Routes>
         <Route path="/" element={<LoginPage />} />
-      </Route>
-      <Route element={<ProtectRoute />}></Route>
-    </Routes>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

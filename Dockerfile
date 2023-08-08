@@ -1,25 +1,26 @@
+
 FROM node:16 as builder
 
-RUN yarn cache clean
-RUN mkdir /usr/src/app
-WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package.json yarn.lock /usr/src/app/
-RUN yarn install
+WORKDIR /app
 
+COPY package.json .
+COPY yarn.lock .
 
-COPY . /usr/src/app
+RUN yarn install --frozen-lockfile
 
-RUN yarn add -D typescript
+COPY . .
 
 RUN yarn build
 
-FROM nginx:1.19
 
-RUN rm -rf /etc/nginx/conf.d
-COPY conf /etc/nginx
+FROM httpd:2.4
 
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+RUN apt-get update && apt-get install -y apache2
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=builder /app/dist /var/www/html/
+
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
+
+RUN a2enmod rewrite
+
+CMD ["apache2ctl", "-D", "FOREGROUND"]
